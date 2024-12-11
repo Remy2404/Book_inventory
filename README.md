@@ -1,4 +1,3 @@
-```markdown
 # Book Inventory Management System
 
 ![Book Inventory](https://img.shields.io/badge/Project-Book%20Inventory%20Management%20System-blue)
