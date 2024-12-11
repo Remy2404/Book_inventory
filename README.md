@@ -4,209 +4,597 @@
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Setup Instructions](#setup-instructions)
-- [API Documentation](#api-documentation)
-- [Testing with Postman](#testing-with-postman)
-- [Running Tests](#running-tests)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- Project Overview
+- Features
+- Tech Stack
+- Project Structure
+- Prerequisites
+- Setup Instructions
+  - 1. Clone the Repository
+  - 2. Create a Virtual Environment
+  - 3. Activate the Virtual Environment
+  - 4. Install Dependencies
+  - 5. Configure Environment Variables
+  - 6. Set Up the Database
+    - a. Create the Database and Tables
+    - b. Run Database Migrations (If Applicable)
+  - 7. Start the Application
+- API Documentation
+  - Base URL
+  - Endpoints
+    - Books
+    - Authors
+    - Categories
+- Testing with Postman
+  - 1. Importing the Postman Collection
+  - 2. Creating and Sending Requests
+- Running Tests
+- Troubleshooting
+- Contributing
+- License
+- Acknowledgements
+
+---
 
 ## Project Overview
 
-The Book Inventory Management System is a RESTful API built with FastAPI that allows users to manage their book inventory efficiently. It supports CRUD operations, enabling users to add, edit, delete, and search for books.
+The **Book Inventory Management System** is a RESTful API built with **FastAPI** that allows users to manage their book inventory efficiently. It supports CRUD (Create, Read, Update, Delete) operations, enabling users to add, edit, delete, and search for books. Additional features include categorization, author details management, and tracking book availability.
+
+---
 
 ## Features
 
-- Create, Read, Update, and Delete books
-- Search functionality
-- Categorization of books
-- Author details management
-- Availability tracking
+- **Create Books:** Add new books to the inventory.
+- **Read Books:** Retrieve details of individual books or list all books.
+- **Update Books:** Modify existing book details.
+- **Delete Books:** Remove books from the inventory.
+- **Search Functionality:** Filter books based on title, author, category, and availability.
+- **Categorization:** Organize books into various categories.
+- **Author Details Management:** Manage information about book authors.
+- **Availability Tracking:** Monitor the availability status of books.
+
+---
 
 ## Tech Stack
 
-- Backend: FastAPI, SQLAlchemy, Pydantic
-- Database: MySQL
-- Development Tools: Uvicorn, Alembic, Postman
+- **Backend:**
+  - [FastAPI](https://fastapi.tiangolo.com/) - Web framework for building APIs.
+  - [SQLAlchemy](https://www.sqlalchemy.org/) - ORM for database interactions.
+  - [Pydantic](https://pydantic-docs.helpmanual.io/) - Data validation and settings management.
+  - [MySQL](https://www.mysql.com/) - Relational database.
+  
+- **Development Tools:**
+  - [Uvicorn](https://www.uvicorn.org/) - ASGI server for FastAPI.
+  - [Alembic](https://alembic.sqlalchemy.org/) - Database migrations.
+  - [Postman](https://www.postman.com/) - API testing.
+
+---
 
 ## Project Structure
 
-[Project structure as provided in the original README]
+```
+C:\Book_inventory
+│
+├── app
+│   ├── __init__.py          # Package initialization
+│   ├── exceptions.py        # Custom exceptions for the app
+│   ├── models.py            # Database models (ORM for MySQL)
+│   ├── routes.py            # API routes and view functions
+│   ├── schemas.py           # Data validation schemas (using Pydantic)
+│   ├── services.py          # Business logic and service layer
+│   └── utils.py             # Utility functions and helpers
+│
+├── db
+│   ├── __init__.py          # Package initialization for database module
+│   ├── connection.py        # MySQL database connection setup
+│   └── migrations           # Database migration scripts (using Alembic)
+│       ├── versions         # Folder for migration files
+│       │   └── ...          # Individual migration files
+│       └── env.py           # Alembic environment configuration
+│
+├── tests                    # Test directory for unit and integration tests
+│   ├── __init__.py          # Package initialization for tests
+│   ├── test_models.py       # Tests for database models
+│   ├── test_routes.py       # Tests for API routes
+│   ├── test_services.py     # Tests for business logic services
+│   └── test_utils.py        # Tests for utility functions
+│
+├── .env                     # Environment variables configuration file
+├── .gitignore               # Git ignore file
+├── config.py                # Configuration settings
+├── main.py                  # Entry point of the application (FastAPI app)
+├── README.md                # Project documentation and setup instructions
+└── requirements.txt         # List of dependencies needed to run the project
+```
+
+---
 
 ## Prerequisites
 
-- Python 3.8+
-- MySQL Server
-- Git
-- Postman
+Before setting up the project, ensure you have the following installed on your system:
+
+- **Python 3.8+**: [Download Python](https://www.python.org/downloads/)
+- **MySQL Server**: [Download MySQL](https://dev.mysql.com/downloads/mysql/)
+- **Git**: [Download Git](https://git-scm.com/downloads)
+- **Postman**: [Download Postman](https://www.postman.com/downloads/)
+
+---
 
 ## Setup Instructions
 
-1. **Clone the Repository**
+Follow the steps below to set up and run the Book Inventory Management System on your local machine.
+
+### 1. Clone the Repository
+
+Open your terminal or command prompt and clone the repository:
 
 ```sh
-git clone https://github.com/yourusername/book_inventory.git
+git clone https://github.com/Remy2404/book_inventory.git
 cd book_inventory
 ```
 
-2. **Create a Virtual Environment**
+*Replace `Remy2404` with your actual GitHub username if different.*
+
+### 2. Create a Virtual Environment
+
+It's recommended to use a virtual environment to manage dependencies.
 
 ```sh
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+python -m venv .venv
 ```
 
-3. **Install Dependencies**
+### 3. Activate the Virtual Environment
+
+- **Windows:**
+
+  ```sh
+  .venv\Scripts\activate
+  ```
+
+- **macOS/Linux:**
+
+  ```sh
+  source .venv/bin/activate
+  ```
+
+### 4. Install Dependencies
+
+Ensure you're in the project directory and install the required packages:
 
 ```sh
 pip install -r requirements.txt
 ```
 
-4. **Configure Environment Variables**
+### 5. Configure Environment Variables
 
-Create a `.env` file in the root directory and add the following:
+Create a 
+
+.env
+
+ file in the root directory with the following content:
 
 ```
-DATABASE_URL=mysql://username:password@localhost/book_inventory
+DATABASE_URL=mysql+pymysql://your_username:your_password@localhost:3306/book_inventory
 SECRET_KEY=your_secret_key_here
 ```
 
-Replace `username`, `password`, and `your_secret_key_here` with your MySQL credentials and a secure secret key.
+- Replace `your_username` and `your_password` with your actual MySQL credentials.
+- Replace `your_secret_key_here` with a secure secret key of your choice.
 
-5. **Set Up the Database**
+### 6. Set Up the Database
 
-Create a new MySQL database named `book_inventory`.
+#### a. Create the Database and Tables
 
-6. **Run Database Migrations**
+Execute the provided SQL script to create the `book_inventory` database and the `books` table.
+
+1. **Access MySQL Shell:**
+
+   ```sh
+   mysql -u your_username -p
+   ```
+
+   Enter your password when prompted.
+
+2. **Run the SQL Script:**
+
+   ```sql
+   -- Create the book_inventory database
+   CREATE DATABASE IF NOT EXISTS book_inventory;
+
+   -- Select the book_inventory database
+   USE book_inventory;
+
+   -- Create the books table
+   CREATE TABLE IF NOT EXISTS books (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       title VARCHAR(255) NOT NULL,
+       author VARCHAR(255) NOT NULL,
+       category VARCHAR(255) NOT NULL,
+       available BOOLEAN DEFAULT TRUE,
+       INDEX idx_title (title),
+       INDEX idx_author (author),
+       INDEX idx_category (category)
+   );
+   ```
+
+   You can copy and paste the above SQL commands directly into the MySQL shell or save them in a `.sql` file and execute using the `SOURCE` command.
+
+#### b. Run Database Migrations (If Applicable)
+
+If you're using Alembic for migrations:
 
 ```sh
 alembic upgrade head
 ```
 
-7. **Start the Application**
+*Ensure that Alembic is properly configured in the 
+
+migrations
+
+ directory.*
+
+### 7. Start the Application
+
+Run the FastAPI application using Uvicorn:
 
 ```sh
 uvicorn main:app --reload
 ```
 
-The API will be available at `http://localhost:8000`.
+- The `--reload` flag enables auto-reloading on code changes.
+- The application will be accessible at `http://127.0.0.1:8000`.
+
+---
 
 ## API Documentation
 
+FastAPI provides interactive API documentation out of the box.
+
+- **Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+---
+
 ### Base URL
 
-`http://localhost:8000/api/v1`
+All API endpoints are prefixed with:
+
+```
+http://127.0.0.1:8000/
+```
+
+---
 
 ### Endpoints
 
-- **Books**
-  - GET `/books`: List all books
-  - POST `/books`: Create a new book
-  - GET `/books/{book_id}`: Get a specific book
-  - PUT `/books/{book_id}`: Update a book
-  - DELETE `/books/{book_id}`: Delete a book
+#### Books
 
-- **Authors**
-  - GET `/authors`: List all authors
-  - POST `/authors`: Create a new author
-  - GET `/authors/{author_id}`: Get a specific author
-  - PUT `/authors/{author_id}`: Update an author
-  - DELETE `/authors/{author_id}`: Delete an author
+- **GET `/books`:** List all books
+- **POST `/books`:** Create a new book
+- **GET `/books/{book_id}`:** Get a specific book
+- **PUT `/books/{book_id}`:** Update a book
+- **DELETE `/books/{book_id}`:** Delete a book
 
-- **Categories**
-  - GET `/categories`: List all categories
-  - POST `/categories`: Create a new category
-  - GET `/categories/{category_id}`: Get a specific category
-  - PUT `/categories/{category_id}`: Update a category
-  - DELETE `/categories/{category_id}`: Delete a category
+#### Authors
+
+- **GET `/authors`:** List all authors
+- **POST `/authors`:** Create a new author
+- **GET `/authors/{author_id}`:** Get a specific author
+- **PUT `/authors/{author_id}`:** Update an author
+- **DELETE `/authors/{author_id}`:** Delete an author
+
+#### Categories
+
+- **GET `/categories`:** List all categories
+- **POST `/categories`:** Create a new category
+- **GET `/categories/{category_id}`:** Get a specific category
+- **PUT `/categories/{category_id}`:** Update a category
+- **DELETE `/categories/{category_id}`:** Delete a category
+
+---
 
 ## Testing with Postman
 
-1. **Import the Postman Collection**
+Postman is a powerful tool for testing APIs. Follow the steps below to test the Book Inventory Management System API.
 
-   - Open Postman
-   - Click on "Import" in the top left corner
-   - Select "Link" and paste the following URL:
-     `https://www.getpostman.com/collections/your_collection_id_here`
+### 1. Importing the Postman Collection
 
-2. **Set Up Environment Variables**
+*If a Postman collection file is provided in your repository, follow these steps to import it. If not, you can create requests manually as described below.*
 
-   Create a new environment in Postman and add the following variables:
-   - `base_url`: `http://localhost:8000/api/v1`
-   - `auth_token`: Leave this empty for now
+1. **Download the Collection:**
 
-3. **Example Requests**
+   Download the Postman collection file (e.g., `BookInventory.postman_collection.json`) from the repository.
 
-   - **Create a Book**
-     - Method: POST
-     - URL: `{{base_url}}/books`
-     - Body (JSON):
-       ```json
-       {
-         "title": "The Great Gatsby",
-         "author_id": 1,
-         "category_id": 2,
-         "isbn": "9780743273565",
-         "publication_year": 1925,
-         "available": true
-       }
-       ```
+2. **Open Postman:**
 
-   - **Get All Books**
-     - Method: GET
-     - URL: `{{base_url}}/books`
+   Launch the Postman application.
 
-   - **Update a Book**
-     - Method: PUT
-     - URL: `{{base_url}}/books/1`
-     - Body (JSON):
-       ```json
-       {
-         "title": "The Great Gatsby (Updated)",
-         "available": false
-       }
-       ```
+3. **Import the Collection:**
 
-   - **Delete a Book**
-     - Method: DELETE
-     - URL: `{{base_url}}/books/1`
+   - Click on the **"Import"** button in the top-left corner.
+   - Select **"File"** and navigate to the downloaded collection file.
+   - Click **"Import"**.
 
-4. **Send Requests**
+### 2. Creating and Sending Requests
 
-   Click the "Send" button to execute each request and view the response.
+#### A. Create a New Book (`POST /books/`)
+
+1. **Create Request:**
+
+   - Click **"New"** > **"Request"**.
+   - Name it **"Create Book"**.
+   - Select your collection to save it in.
+
+2. **Set Request Details:**
+
+   - **Method:** `POST`
+   - **URL:** `http://127.0.0.1:8000/books/`
+
+3. **Set Headers:**
+
+   - **Key:** `Content-Type`
+   - **Value:** `application/json`
+
+4. **Set Body:**
+
+   - Click on the **"Body"** tab.
+   - Select **"raw"** and choose **"JSON"** from the dropdown.
+   - Enter the following JSON:
+
+     ```json
+     {
+       "title": "The Great Gatsby",
+       "author": "F. Scott Fitzgerald",
+       "category": "Fiction",
+       "available": true
+     }
+     ```
+
+5. **Send Request:**
+
+   - Click **"Send"**.
+   - You should receive a `201 Created` response with the created book details.
+
+#### B. Retrieve a Single Book (`GET /books/{book_id}`)
+
+1. **Create Request:**
+
+   - Name it **"Get Book by ID"**.
+
+2. **Set Request Details:**
+
+   - **Method:** `GET`
+   - **URL:** `http://127.0.0.1:8000/books/1`
+
+3. **Send Request:**
+
+   - Click **"Send"**.
+   - Expect a `200 OK` response with the book details.
+
+#### C. Retrieve All Books (`GET /books/`)
+
+1. **Create Request:**
+
+   - Name it **"Get All Books"**.
+
+2. **Set Request Details:**
+
+   - **Method:** `GET`
+   - **URL:** `http://127.0.0.1:8000/books/`
+
+3. **Add Query Parameters (Optional):**
+
+   - Click on the **"Params"** tab.
+   - Add key-value pairs for filtering, e.g.:
+
+     | Key        | Value                |
+     |------------|----------------------|
+     | title      | The Great Gatsby     |
+     | author     | F. Scott Fitzgerald  |
+     | category   | Fiction              |
+     | available  | true                 |
+
+4. **Send Request:**
+
+   - Click **"Send"**.
+   - Expect a `200 OK` response with a list of books matching the filters.
+
+#### D. Update a Book (`PUT /books/{book_id}`)
+
+1. **Create Request:**
+
+   - Name it **"Update Book"**.
+
+2. **Set Request Details:**
+
+   - **Method:** `PUT`
+   - **URL:** `http://127.0.0.1:8000/books/1`
+
+3. **Set Headers:**
+
+   - **Key:** `Content-Type`
+   - **Value:** `application/json`
+
+4. **Set Body:**
+
+   - Enter the updated book details in JSON format:
+
+     ```json
+     {
+       "title": "The Great Gatsby (Updated)",
+       "author": "F. Scott Fitzgerald",
+       "category": "Classic Fiction",
+       "available": false
+     }
+     ```
+
+5. **Send Request:**
+
+   - Click **"Send"**.
+   - Expect a `200 OK` response with the updated book details.
+
+#### E. Delete a Book (`DELETE /books/{book_id}`)
+
+1. **Create Request:**
+
+   - Name it **"Delete Book"**.
+
+2. **Set Request Details:**
+
+   - **Method:** `DELETE`
+   - **URL:** `http://127.0.0.1:8000/books/1`
+
+3. **Send Request:**
+
+   - Click **"Send"**.
+   - Expect a `200 OK` response confirming the deletion.
+
+---
 
 ## Running Tests
 
-To run the test suite:
+The project includes unit and integration tests to ensure functionality.
 
-```sh
-pytest
-```
+1. **Ensure Dependencies Are Installed:**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+2. **Run Tests Using pytest:**
+
+   ```sh
+   pytest
+   ```
+
+   *Make sure you have `pytest` installed. If not, add it to your 
+
+requirements.txt
+
+ or install it separately:*
+
+   ```sh
+   pip install pytest
+   ```
+
+3. **Interpreting Test Results:**
+
+   - Passed tests will be marked with a dot (`.`).
+   - Failed tests will show detailed error messages.
+
+---
 
 ## Troubleshooting
 
-- **Database Connection Issues**: Ensure your MySQL server is running and the credentials in the `.env` file are correct.
-- **Import Errors**: Make sure all dependencies are installed and you're in the virtual environment.
-- **API Not Responding**: Check if the Uvicorn server is running and there are no error messages in the console.
+### Common Issues and Solutions
+
+#### 1. Import Errors
+
+- **Issue:** `ModuleNotFoundError` related to `pydantic_settings`.
+- **Solution:** Ensure `pydantic-settings` is installed.
+
+  ```sh
+  pip install pydantic-settings
+  ```
+
+#### 2. Database Connection Errors
+
+- **Issue:** Unable to connect to MySQL.
+- **Solution:**
+  - Verify MySQL server is running.
+  - Check `DATABASE_URL` in the 
+
+.env
+
+ file.
+  - Ensure the `book_inventory` database and `books` table exist.
+
+#### 3. CORS Issues
+
+- **Issue:** Cross-Origin Resource Sharing (CORS) errors when accessing the API from a frontend.
+- **Solution:**
+  - Ensure CORS middleware is configured in 
+
+main.py
+
+:
+
+    ```python
+    from fastapi.middleware.cors import CORSMiddleware
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # Update with specific origins in production
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    ```
+
+#### 4. Virtual Environment Activation
+
+- **Issue:** Packages not found despite installation.
+- **Solution:** Ensure the virtual environment is activated.
+
+  - **Windows:**
+
+    ```sh
+    .venv\Scripts\activate
+    ```
+
+  - **macOS/Linux:**
+
+    ```sh
+    source .venv/bin/activate
+    ```
+
+#### 5. Port Already in Use
+
+- **Issue:** Uvicorn fails to start because port `8000` is in use.
+- **Solution:**
+  - Specify a different port:
+
+    ```sh
+    uvicorn main:app --reload --port 8001
+    ```
+
+---
 
 ## Contributing
 
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Follow these steps to contribute:
+
+1. **Fork the Repository**
+
+2. **Create a New Branch**
+
+   ```sh
+   git checkout -b feature/AmazingFeature
+   ```
+
+3. **Make Changes**
+
+4. **Commit Changes**
+
+   ```sh
+   git commit -m "Add some AmazingFeature"
+   ```
+
+5. **Push to Branch**
+
+   ```sh
+   git push origin feature/AmazingFeature
+   ```
+
+6. **Open a Pull Request**
+
+---
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
+---
 
 ## Acknowledgements
 
@@ -214,6 +602,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [SQLAlchemy](https://www.sqlalchemy.org/)
 - [Pydantic](https://pydantic-docs.helpmanual.io/)
 - [Alembic](https://alembic.sqlalchemy.org/)
-```
+
+---
 
 This comprehensive guide provides detailed instructions on setting up the project, using the API, testing with Postman, and contributing to the project. It covers all aspects from installation to troubleshooting, making it easier for users and developers to work with the Book Inventory Management System.
