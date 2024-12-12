@@ -1,4 +1,3 @@
-# app/services.py
 from sqlalchemy.orm import Session
 from .models import Book
 from app import schemas , models

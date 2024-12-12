@@ -1,3 +1,4 @@
+# schemas.py
 from pydantic import BaseModel
 from typing import Optional
 
@@ -12,7 +13,7 @@ class Author(AuthorBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class CategoryBase(BaseModel):
     name: str
@@ -25,7 +26,7 @@ class Category(CategoryBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class BookBase(BaseModel):
     title: str
@@ -36,10 +37,13 @@ class BookBase(BaseModel):
 class BookCreate(BookBase):
     pass
 
+class BookUpdate(BookBase):
+    pass
+
 class Book(BookBase):
     id: int
-    author: Author
-    category: Category
+    author: Optional[Author] = None
+    category: Optional[Category] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True

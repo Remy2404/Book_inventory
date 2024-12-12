@@ -1,12 +1,12 @@
-# app/routes.py
+# routes.py
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from . import services, schemas
 from typing import List
-from app import services, schemas
 from db.connection import SessionLocal
 
 router = APIRouter(
-    prefix="/books",
+    prefix="",
     tags=["books"],
 )
 
@@ -19,7 +19,7 @@ def get_db():
 
 @router.post("/", response_model=schemas.Book)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
-    return services.create_book(db, book)
+    return services.create_book(db=db, book=book)
 
 @router.get("/{book_id}", response_model=schemas.Book)
 def read_book(book_id: int, db: Session = Depends(get_db)):
