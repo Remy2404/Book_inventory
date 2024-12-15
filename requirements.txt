@@ -4,3 +4,4 @@ sqlalchemy
 pymysql
 pydantic
 pydantic-settings
+gunicorn
