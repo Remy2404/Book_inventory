@@ -13,12 +13,13 @@
   - 1. Clone the Repository
   - 2. Create a Virtual Environment
   - 3. Activate the Virtual Environment
-  - 4. Install Dependencies
-  - 5. Configure Environment Variables
-  - 6. Set Up the Database
+  - 4. Docker Setup
+  - 5. Install Dependencies
+  - 6. Configure Environment Variables
+  - 7. Set Up the Database
     - a. Create the Database and Tables
     - b. Run Database Migrations (If Applicable)
-  - 7. Start the Application
+  - 8. Start the Application
 - API Documentation
   - Base URL
   - Endpoints
@@ -62,6 +63,7 @@ The **Book Inventory Management System** is a RESTful API built with **FastAPI**
   - [SQLAlchemy](https://www.sqlalchemy.org/) - ORM for database interactions.
   - [Pydantic](https://pydantic-docs.helpmanual.io/) - Data validation and settings management.
   - [MySQL](https://www.mysql.com/) - Relational database.
+  - [Docker](https://www.docker.com/) - Container platform for deployment.
   
 - **Development Tools:**
   - [Uvicorn](https://www.uvicorn.org/) - ASGI server for FastAPI.
@@ -156,8 +158,18 @@ python -m venv .venv
   ```sh
   source .venv/bin/activate
   ```
+### 4 docker setup
 
-### 4. Install Dependencies
+- Build the image:
+      ```sh
+      docker build -t book-inventory .
+      ```
+   - Run the container:
+      ```sh
+      docker run -d -p 80:80 book-inventory
+      ```
+
+### 5. Install Dependencies
 
 Ensure you're in the project directory and install the required packages:
 
@@ -165,7 +177,7 @@ Ensure you're in the project directory and install the required packages:
 pip install -r requirements.txt
 ```
 
-### 5. Configure Environment Variables
+### 6. Configure Environment Variables
 
 Create a 
 
@@ -181,7 +193,7 @@ SECRET_KEY=your_secret_key_here
 - Replace `your_username` and `your_password` with your actual MySQL credentials.
 - Replace `your_secret_key_here` with a secure secret key of your choice.
 
-### 6. Set Up the Database
+### 7. Set Up the Database
 
 #### a. Create the Database and Tables
 
@@ -233,7 +245,7 @@ migrations
 
  directory.*
 
-### 7. Start the Application
+### 8. Start the Application
 
 Run the FastAPI application using Uvicorn:
 
