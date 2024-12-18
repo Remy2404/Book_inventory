@@ -1,7 +1,6 @@
 .venv
 __PyChache__
-```
 command.txt
 .env
-env
-.env
+env/
+.env/
