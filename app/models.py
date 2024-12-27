@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean, ForeignKey, TIMESTAMP, func
 from sqlalchemy.orm import relationship
 from db.connection import Base
-
+#! Import the Base class from the db.connection module. This is the class that we will inherit from in our models. 
 class Author(Base):
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True, autoincrement=True)
